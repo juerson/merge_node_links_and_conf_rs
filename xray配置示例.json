@@ -1,0 +1,33 @@
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "direct"
+      }
+    ]
+  },
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 10808,
+      "protocol": "socks"
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 10809,
+      "protocol": "http"
+    }
+  ],
+  "outbounds": [
+    // 粘贴你的客户端配置，需要保留 "tag": "proxy"，如下：
+    {"mux":{"concurrency":-1,"enabled":false},"protocol":"shadowsocks","settings":{"servers":[{"address":"118.167.18.209","level":1,"method":"2022-blake3-aes-256-gcm","ota":false,"password":"oats+7vdaSOb4NsxWwCBQll4qTwPu/dhpegiIGnqd9c=","port":22335}]},"streamSettings":{"network":"tcp"},"tag":"proxy"},
+    {"protocol":"freedom","settings":{},"tag":"direct"} // 这行必须的
+  ]
+}

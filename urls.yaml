@@ -1,0 +1,126 @@
+# 顶键(key)：
+#   1、key的名称随意(只用于个人分类)，当内容为json数据且没有字段outbounds时，把json数据写入文件中，那时候key就作为文件名使用；
+#   2、如果是更新日期的地址，不能在这个文件中找到对应的key，如果需要文件名就截取链接地址后面的字符串(日期)，作为文件名；
+# 顶键(key)对应的值(value)：
+#    value值必须是一个url数组或多个url数组(也就是，不管写一条还是多条链接，都要在链接的前面添加字符" - ")。
+#
+# 注意：
+#   1、程序没有自动检验诸如："vmess://"、"ss://"、"ssr://"等这类节点链接的逻辑，不要把指望程序智能抓取任意网页中分享的节点链接。
+#   2、程序只判断抓取到网页是否全是json数据、yaml数据、Base64加密字符串；是否含有反引号(也称代码块)，有反引号就抓取第一个反引号里面的节点(例如下面GitHub_Readme地址中的内容)。
+#    - 是json数据：跟其它json数据中的outbounds数据合并在一起，没有outbounds字段的json，就单独写在一个独立的json文件中；
+#    - 是yaml数据：跟其它yml/yaml数据中的proxies数据合并在一起；
+#    - 是base64加密的数据：一般base64加密的字符串，解密后都是v2节点，程序只需对它base64解密后，把它们当成字符串以行为单位去重，添加links.txt文件中即可；
+#    - 是Github的readme.md页面：如果有代码块(反引号)，就抓取第一个反引号(也称代码块)里面的节点，必要时进行base64解密或合并到yaml，当然中途可能进行简单的去重；
+#    - 是v2节点：比如"ss://"、 "ssr://" 、"vless：//"、trojan://"等这类节点链接就直接写在links.txt文件中，当然写入前进行简单的去重。
+#
+
+Base64:
+  - https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/trojan
+  - https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/vmess
+  - https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/vless
+  - https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/ssr
+  - https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/ss_with_plugin
+  - https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub
+  - https://raw.githubusercontent.com/freefq/free/master/v2
+  - https://raw.githubusercontent.com/mheidari98/.proxy/main/ss
+  - https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2
+  - https://raw.githubusercontent.com/a2470982985/getNode/main/v2ray.txt
+  - https://raw.githubusercontent.com/ermaozi01/free_clash_vpn/main/subscribe/v2ray.txt
+  - https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/temporary
+  - https://raw.githubusercontent.com/ts-sf/fly/main/v2
+  - https://raw.githubusercontent.com/kany2000/dingyue/main/README.md
+  - https://www.xrayvip.com/free.txt
+ProxyLink:
+  - https://hueco.link/v.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Sweden/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Switzerland/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Australia/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Austria/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Canada/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/China/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Denmark/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Finland/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/France/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Germany/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Hong%20Kong/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Iceland/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/India/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Indonesia/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Iran/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Ireland/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Japan/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Netherlands/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Poland/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Republic%20of%20Korea/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Republic%20of%20Lithuania/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Russia/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Singapore/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Turkey/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Ukraine/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/United%20Kingdom/config.txt
+  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/United%20States/config.txt
+  - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/yudou66.txt
+  - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/blues.txt
+  - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/halekj.txt
+  - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/kkzui.txt
+  - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/openrunner.txt
+  - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/wenode.txt
+  - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/v2rayshare.txt
+  - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/nodefree.txt
+clash:
+  - https://raw.githubusercontent.com/aiboboxx/clashfree/main/clash.yml
+  - https://raw.githubusercontent.com/a2470982985/getNode/main/clash.yaml
+  - https://raw.githubusercontent.com/ermaozi01/free_clash_vpn/main/subscribe/clash.yml
+  - https://raw.githubusercontent.com/ts-sf/fly/main/clash
+  - https://clashnode.com/wp-content/uploads/2024/02/20240206.yaml
+  - https://raw.githubusercontent.com/kkkouo/kkkouo.github.io/main/djsdy
+  - https://raw.githubusercontent.com/zhangkaiitugithub/passcro/main/speednodes.yaml
+  - https://raw.githubusercontent.com/nodesharefree/clashfree/main/clash.yml
+GitHub_Readme: # 程序会抓取第一个反引号里面的内容，这里的key键名可以取其它名称
+  - https://raw.githubusercontent.com/abshare/abshare.github.io/main/README.md
+  - https://raw.githubusercontent.com/mksshare/mksshare.github.io/main/README.md
+  - https://raw.githubusercontent.com/tolinkshare/freenode/main/README.md
+  - https://raw.githubusercontent.com/mianfeifq/share/main/README.md
+  - https://raw.githubusercontent.com/aiboboxx/kexueshangwang/main/README.md
+  - https://raw.githubusercontent.com/Pawdroid/Free-servers/main/README.md
+hysteria:
+  - https://www.gitlabip.xyz/Alvin9999/pac2/master/hysteria/1/config.json
+  - https://gitlab.com/free9999/ipupdate/-/raw/master/hysteria/config.json
+  - https://www.githubip.xyz/Alvin9999/pac2/master/hysteria/config.json
+  - https://fastly.jsdelivr.net/gh/Alvin9999/pac2@latest/hysteria/config.json
+  - https://www.gitlabip.xyz/Alvin9999/pac2/master/hysteria/13/config.json
+  - https://gitlab.com/free9999/ipupdate/-/raw/master/hysteria/2/config.json
+  - https://www.githubip.xyz/Alvin9999/pac2/master/hysteria/2/config.json
+  - https://fastly.jsdelivr.net/gh/Alvin9999/pac2@latest/hysteria/2/config.json
+hysteria2:
+  - https://www.gitlabip.xyz/Alvin9999/pac2/master/hysteria2/1/config.json
+  - https://gitlab.com/free9999/ipupdate/-/raw/master/hysteria2/config.json
+  - https://www.githubip.xyz/Alvin9999/pac2/master/hysteria2/config.json
+  - https://fastly.jsdelivr.net/gh/Alvin9999/pac2@latest/hysteria2/config.json
+  - https://www.gitlabip.xyz/Alvin9999/pac2/master/hysteria2/13/config.json
+  - https://gitlab.com/free9999/ipupdate/-/raw/master/hysteria2/2/config.json
+  - https://www.githubip.xyz/Alvin9999/pac2/master/hysteria2/2/config.json
+  - https://fastly.jsdelivr.net/gh/Alvin9999/pac2@latest/hysteria2/2/config.json
+naiveproxy:
+  - https://www.gitlabip.xyz/Alvin9999/PAC/master/naiveproxy/1/config.json
+  - https://gitlab.com/free9999/ipupdate/-/raw/master/naiveproxy/config.json
+  - https://www.githubip.xyz/Alvin9999/PAC/master/naiveproxy/config.json
+  - https://fastly.jsdelivr.net/gh/Alvin9999/PAC@latest/naiveproxy/config.json
+singbox: 
+  - https://www.gitlabip.xyz/Alvin9999/pac2/master/singbox/1/config.json
+  - https://gitlab.com/free9999/ipupdate/-/raw/master/singbox/config.json
+  - https://www.githubip.xyz/Alvin9999/pac2/master/singbox/config.json
+  - https://fastly.jsdelivr.net/gh/Alvin9999/pac2@latest/singbox/config.json
+xray: 
+  - https://www.gitlabip.xyz/Alvin9999/pac2/master/xray/1/config.json
+  - https://gitlab.com/free9999/ipupdate/-/raw/master/xray/config.json
+  - https://www.githubip.xyz/Alvin9999/pac2/master/xray/config.json
+  - https://fastly.jsdelivr.net/gh/Alvin9999/pac2@latest/xray/config.json
+  - https://www.gitlabip.xyz/Alvin9999/pac2/master/xray/3/config.json
+  - https://gitlab.com/free9999/ipupdate/-/raw/master/xray/2/config.json
+  - https://www.githubip.xyz/Alvin9999/pac2/master/xray/2/config.json
+含日期的链接: # 程序中，会将日期自动更新到今天和昨天(这两天的节点都抓取），原始链接的节点，如果不是昨天的，不会抓取的(日期太旧节点会过期)
+  - https://raw.githubusercontent.com/telegeam/blog1/main/a/2024/2/20240206.txt
+  - https://v2rayshare.com/wp-content/uploads/2023/03/20230324.txt
+  - https://nodefree.org/dy/2023/02/20230214.txt
+  - https://clashgithub.com/wp-content/uploads/rss/20240206.txt

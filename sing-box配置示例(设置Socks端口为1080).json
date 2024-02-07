@@ -1,0 +1,15 @@
+{
+  "inbounds": [
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "::",
+      "listen_port": 1080,
+      "sniff": true,
+      "set_system_proxy": false
+    }
+  ],
+  "outbounds": [
+    {"auth_str":"dongtaiwang.com","down_mbps":55,"server":"www.dtku50.xyz","server_port":11229,"tag":"dongtaiwang.com","tls":{"alpn":["h3"],"enabled":true,"insecure":true,"server_name":"bing.com"},"type":"hysteria","up_mbps":11}
+  ]
+}
