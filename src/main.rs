@@ -157,7 +157,9 @@ async fn main() {
                             if let Some(YamlValue::String(original_name)) =
                                 map.get(&YamlValue::String("name".to_string()))
                             {
-                                let base_name = original_name.clone();
+                                // 如果name字段中，含有英文中括号，会错误的，故要替换掉"["和"]"
+                                let base_name =
+                                    original_name.clone().replace("[", "").replace("]", "");
                                 let new_name = if yaml_existing_names.contains_key(&base_name) {
                                     let rng = rand::thread_rng();
                                     let rand_string: String = rng
@@ -369,8 +371,7 @@ async fn main() {
     }
     print!("\n程序运行结束，最终结果输出到{}文件夹中！", save_folder);
     io::stdout().flush().unwrap(); // 强制刷新标准输出缓冲区
-    // 等待用户按Enter键退出程序
-    wait_for_enter();
+    wait_for_enter(); // 等待用户按Enter键退出程序
 }
 
 async fn fetch_url(url: String) -> (String, String) {
@@ -596,7 +597,11 @@ fn write_proxies_field_value_to_file(filename: &str, values: &HashSet<String>) -
             Ok(json_string)
         })
         .collect();
-
+    
+    // 对每个 Vec<String> 进行排序，确保在yaml文件中，分组名称中的节点名是按照names字符串的顺序排序
+    for (_, names) in &mut type_name_map {
+        names.sort();
+    }
     // println!("{:#?}",type_name_map);
 
     let mut other_proxy_groups = String::new();
