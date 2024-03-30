@@ -1,10 +1,18 @@
-# 程序的功能：抓取网页的内容，然后提取对应的内容。
-#   - 是json数据：跟其它json数据中的outbounds数据合并在一起，没有outbounds字段的json，就单独写在一个独立的json文件中；
-#   - 是yaml数据：跟其它yml/yaml数据中的proxies数据合并在一起；
+# 程序的功能：抓取网页的内容，然后提取对应的内容，分别生成clash、xray、sing-box等配置文件和links.txt。
+#   - 是json数据：跟其它json数据中的outbounds数据合并在一起，最后分类，是xray核心的配置，就写到xray配置文件中，是sing-box核心的配置，就写到sing-box配置文件中。
+#                没有outbounds字段的json，单独写在一个独立的json文件中；
+#   - 是yaml数据：跟其它yml/yaml数据中的proxies数据合并在一起，然后生成多个clash配置文件（防止一个clash文件过大，导入clash客户端无法使用或卡死clash程序等问题）；
 #   - 是base64加密的数据：一般base64加密的字符串，解密后都是v2节点，程序只需对它base64解密后，把它们当成字符串以行为单位去重，排序后添加links.txt文件中；
-#   - 是Github的readme.md页面：如果有代码块(反引号)，就抓取第一个反引号(也称代码块)里面的节点，必要时进行base64解密或合并到yaml文件中；
+#   - 是Github的readme.md页面：如果有代码块(反引号)，就抓取第一个反引号(也称代码块)里面的节点，必要时，进行base64解密或合并到clash配置文件中；
 #   - 是v2节点：比如"ss://"、 "ssr://" 、"vless：//"、trojan://"等这类节点链接，提取有效的链接，去重、排序后写入links.txt文件中。
-# 注意：该文件中key-value键值对，可以增删改，只要跟这里的数据结构一样就可以。
+# 关于urls.yaml这个文件：
+#    1、key-value键值对，可以增删改，数据结构一致就可以；
+#    2、key键名（Base64、ProxyLink这些），可以改为其它的名称，不是写死的。
+#    3、对value值中链接的顺序没有什么要求，不是clash的订阅地址一定放到Clash对应的key-value中，可以放到任意key-value键值对中，
+#       Clash的配置您放到Base64对应的key-value中，也可以，程序会自动识别并处理；
+# 程序是否有检查节点是否能用？以及有没有测速功能？
+#     答案：没有，只是简单剔除服务器是127.0.0.1这个无效节点，以及收集所有节点，分门别类，该去哪里就去哪里，
+#          是yaml格式数据的clash配置，就生成clash配置文件，是分享节点的链接，就去links.txt文件中...
 # 超多节点的链接：https://raw.githubusercontent.com/mheidari98/.proxy/main/all
 
 Base64:
@@ -28,33 +36,9 @@ ProxyLink:
   - https://hueco.link/v.txt
   - https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/EternityBase
   - https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/Eternity.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Sweden/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Australia/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Austria/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Canada/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Denmark/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Finland/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/France/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Germany/config.txt
   - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Hong%20Kong/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Iceland/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/India/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Indonesia/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Iran/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Ireland/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Japan/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Netherlands/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Poland/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Republic%20of%20Lithuania/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Russia/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Singapore/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Turkey/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Ukraine/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/United%20Kingdom/config.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/United%20States/config.txt
   - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/yudou66.txt
   - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/blues.txt
-  - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/halekj.txt
   - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/kkzui.txt
   - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/openrunner.txt
   - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/wenode.txt
@@ -67,15 +51,7 @@ clash:
   - https://raw.githubusercontent.com/ts-sf/fly/main/clash
   - https://raw.githubusercontent.com/kkkouo/kkkouo.github.io/main/djsdy
   - https://raw.githubusercontent.com/zhangkaiitugithub/passcro/main/speednodes.yaml
-  - https://raw.githubusercontent.com/nodesharefree/clashfree/main/clash.yml
   - https://raw.githubusercontent.com/vxiaov/free_proxy_ss/main/clash/clash.provider.yaml
-GitHub_Readme: # 程序会抓取第一个反引号里面的内容，这里的key键名可以取其它名称
-  - https://raw.githubusercontent.com/abshare/abshare.github.io/main/README.md
-  - https://raw.githubusercontent.com/mksshare/mksshare.github.io/main/README.md
-  - https://raw.githubusercontent.com/tolinkshare/freenode/main/README.md
-  - https://raw.githubusercontent.com/mianfeifq/share/main/README.md
-  - https://raw.githubusercontent.com/aiboboxx/kexueshangwang/main/README.md
-  - https://raw.githubusercontent.com/Pawdroid/Free-servers/main/README.md
 hysteria:
   - https://gitlab.com/free9999/ipupdate/-/raw/master/hysteria/config.json
   - https://www.githubip.xyz/Alvin9999/pac2/master/hysteria/config.json
@@ -104,7 +80,14 @@ xray:
   - https://fastly.jsdelivr.net/gh/Alvin9999/pac2@latest/xray/config.json
   - https://gitlab.com/free9999/ipupdate/-/raw/master/xray/2/config.json
   - https://www.githubip.xyz/Alvin9999/pac2/master/xray/2/config.json
-含日期的链接: # 程序中，会将日期自动更新到今天和昨天(这两天的节点都抓取），原始链接的节点，如果不是昨天的，不会抓取的(日期太旧节点会过期)
+GitHub_Readme: # 程序会抓取第一个反引号里面的内容，这里的key键名，您可以改为其它名称
+  - https://raw.githubusercontent.com/abshare/abshare.github.io/main/README.md
+  - https://raw.githubusercontent.com/mksshare/mksshare.github.io/main/README.md
+  - https://raw.githubusercontent.com/tolinkshare/freenode/main/README.md
+  - https://raw.githubusercontent.com/mianfeifq/share/main/README.md
+  - https://raw.githubusercontent.com/aiboboxx/kexueshangwang/main/README.md
+  - https://raw.githubusercontent.com/Pawdroid/Free-servers/main/README.md
+含日期的链接: # 程序中，会将日期自动更新到今天和昨天(这两天的节点都抓取），原始链接的节点，如果不是昨天的，不会抓取的(日期太旧节点很大几率过期了)
   - https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/sub/2402/240219.txt
   - https://v2rayshare.com/wp-content/uploads/2023/03/20230324.txt
   - https://clashnode.com/wp-content/uploads/2024/02/20240206.yaml
