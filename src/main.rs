@@ -189,10 +189,24 @@ async fn main() {
                                                         }
                                                     }
                                                 }
+                                            } else {
+                                                // 防止vmess节点中，没有字段cipher，导致报错
+                                                match type_str {
+                                                    "vmess" => {
+                                                        map.insert(
+                                                            YamlValue::String("cipher".to_string()),
+                                                            YamlValue::String("auto".to_string()),
+                                                        );
+                                                    }
+                                                    _ => {}
+                                                }
                                             }
                                         }
                                     }
-                                    /* 下面代码的作用，1.替换节点json数据中，不合法的name字段值，防止导入clash报错；2.将最后修改过的节点的json数据插入到results_clash_set集合中 */
+                                    /* 下面代码的作用，
+                                    1.替换节点json数据中，不合法的name字段值，防止导入clash报错；
+                                    2.将最后修改过的节点的json数据插入到results_clash_set集合中
+                                    */
                                     if let Some(YamlValue::String(original_name)) =
                                         map.get(&YamlValue::String("name".to_string()))
                                     {

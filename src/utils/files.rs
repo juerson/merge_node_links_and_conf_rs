@@ -88,21 +88,41 @@ pub fn write_proxies_field_value_to_file(
                             }
                         }
 
-                        // 将JSON值序列化为字符串
-                        let json_string = serde_json::to_string(&json_value)?; // 压缩成一行，单行显示（使用json数据结构，有花括号）
-                                                                               // let json_string = serde_json::to_string_pretty(&json_value).unwrap(); // 内容展开，多行显示
+                        /* 将JSON值序列化为字符串（二选一） */
+                        // 压缩成一行，单行显示（使用json数据结构，有花括号）
+                        let json_string = serde_json::to_string(&json_value)?;
+
+                        // 内容展开，多行显示
+                        // let json_string = serde_json::to_string_pretty(&json_value).unwrap();
                         Ok(json_string)
                     })
                     .collect();
+                // 根据 "type" 字段的顺序重新排序
+                let sorted_json_strings = match json_strings {
+                    Ok(strings) => {
+                        let mut sorted_strings = strings.clone();
+                        sorted_strings.sort_by_key(|s| {
+                            let json_value: JsonValue = serde_json::from_str(s).unwrap();
+                            json_value
+                                .get("type")
+                                .and_then(|t| t.as_str())
+                                .unwrap()
+                                .to_string()
+                        });
+                        sorted_strings
+                    }
+                    Err(e) => return Err(e.into()),
+                };
 
                 // 对每个 Vec<String> 进行排序，确保在yaml文件中，分组名称中的节点名是按照names字符串的顺序排序
                 for (_, names) in &mut type_name_map {
                     names.sort();
                 }
 
-                let mut other_proxy_groups = String::new();
+                // let mut other_proxy_groups = String::new();
                 let mut all_node_names = String::new();
                 let mut group_names = String::new();
+                let mut group_name_with_node_name_map = HashMap::new();
                 // 遍历HashMap中的每个键值对
                 for (key, names) in &type_name_map {
                     // 格式化key
@@ -118,11 +138,25 @@ pub fn write_proxies_field_value_to_file(
                         .map(|name| format!("      - {}", name))
                         .collect::<Vec<String>>()
                         .join("\n");
-                    // 将key_string和names_string拼接起来，并加入换行符
-                    let other_proxy_groups_sub = format!("{}\n{}\n", key_string, names_string);
+                    // 每个分组的名称和节点名称，成对地添加到HashMap中
+                    group_name_with_node_name_map.insert(key_string.clone(), names_string.clone());
+                    // 所有的节点名称，准备添加到“自动选择”的代理分组中
                     all_node_names.push_str(&format!("{}\n", names_string.clone()));
-                    other_proxy_groups.push_str(&other_proxy_groups_sub);
                 }
+                // 将HashMap中的键值对转换为一个可排序的Vec
+                let mut other_groups_vec: Vec<_> =
+                    group_name_with_node_name_map.into_iter().collect();
+
+                // 对Vec按键进行排序
+                other_groups_vec.sort_by(|&(ref key1, _), &(ref key2, _)| key1.cmp(key2));
+
+                // 构建拼接后的字符串（由多个代理分组组合在其它的）
+                let other_groups: String = other_groups_vec
+                    .iter()
+                    .flat_map(|(key, value)| vec![key.clone(), value.clone()])
+                    .collect::<Vec<String>>()
+                    .join("\n");
+
                 let select_nodes_type_group = format!("  - name: 🔰 选择代理类型\n    type: select\n    proxies:\n      - 🎯 全球直连\n      - ♻️ 自动选择\n{}", group_names);
                 let auto_select_nodes_group = format!("  - name: ♻️ 自动选择\n    type: url-test\n    url: http://www.gstatic.com/generate_204\n    interval: 500\n    proxies:\n{}", all_node_names);
                 let global_interception = format!("  - name: 🛑 全球拦截\n    type: select\n    proxies:\n      - REJECT\n      - DIRECT\n");
@@ -130,9 +164,9 @@ pub fn write_proxies_field_value_to_file(
                     "  - name: 🎯 全球直连\n    type: select\n    proxies:\n      - DIRECT\n"
                 );
                 let proxy_group = format!(
-                    "\nproxy-groups:\n{}{}{}{}{}",
+                    "\nproxy-groups:\n{}{}\n{}{}{}",
                     select_nodes_type_group,
-                    other_proxy_groups,
+                    other_groups, // 其它分组，包含了多个分组已经对应的节点名称
                     auto_select_nodes_group,
                     global_interception,
                     direct,
@@ -140,23 +174,17 @@ pub fn write_proxies_field_value_to_file(
 
                 let rutles = format!("{}\n  - MATCH,🔰 选择代理类型", RULES);
 
-                // 处理JSON序列化错误
-                let json_strings = match json_strings {
-                    Ok(strings) => strings,
-                    Err(serde_error) => {
-                        return Err(io::Error::new(io::ErrorKind::Other, serde_error));
-                    }
-                };
                 // 【YAML排序】转为JSON数据后按照JSON中字段相同的排序在一起
                 // let sorted_json_strings = sort_json_vec_of_string(json_strings.clone());
-                let yaml_content: String = json_strings
+                let yaml_content: String = sorted_json_strings
                     .iter()
                     .map(|value| format!("  - {}", value))
                     .collect::<Vec<_>>()
                     .join("\n");
                 let clash_proxy_prefix = format!("{}\n", CLASH_BASIC_INFO); // clash配置文件开头port、dns这些信息
                 let result = clash_proxy_prefix.to_owned() + &yaml_content + &proxy_group + &rutles; // 添加"proxies:"作为精简版clash配置文件
-                                                                                                     // 生成唯一的文件名（已经添加文件夹save_folder=output），存在该文件就添加编号
+
+                // 生成唯一的文件名（已经添加文件夹save_folder=output），存在该文件就添加编号
                 let file_path = generate_unique_filename(save_folder, filename.to_owned(), "yaml");
                 fs::write(file_path, result)?;
             }
