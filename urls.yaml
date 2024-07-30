@@ -15,43 +15,43 @@
 #          是yaml格式数据的clash配置，就生成clash配置文件，是分享节点的链接，就去links.txt文件中...
 # 超多节点的链接：https://raw.githubusercontent.com/mheidari98/.proxy/main/all
 
+# 代理的地址，https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/yudou66.txt
+GithubProxy: mirror.ghproxy.com
+
 Base64:
   - https://www.xrayvip.com/free.txt
-  - https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/ss_with_plugin
   - https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub
   - https://raw.githubusercontent.com/freefq/free/master/v2
   - https://raw.githubusercontent.com/mheidari98/.proxy/main/ss
   - https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2
-  - https://raw.githubusercontent.com/a2470982985/getNode/main/v2ray.txt
   - https://raw.githubusercontent.com/ermaozi01/free_clash_vpn/main/subscribe/v2ray.txt
   - https://raw.githubusercontent.com/ts-sf/fly/main/v2
   - https://raw.githubusercontent.com/kany2000/dingyue/main/README.md
+  - https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/ss_with_plugin
   - https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/temporary
   - https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/trojan
   - https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/vmess
   - https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/vless
   - https://raw.githubusercontent.com/Huibq/TrojanLinks/master/links/ssr
-  - https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/airport_merge_base64.txt
 ProxyLink:
-  - https://hueco.link/v.txt
-  - https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/EternityBase
   - https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/Eternity.txt
-  - https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector_Py/main/sub/Hong%20Kong/config.txt
+  - https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/EternityAir.txt
+  - https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/EternityBase
   - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/yudou66.txt
   - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/blues.txt
+  - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/zyfxs.txt
   - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/kkzui.txt
   - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/openrunner.txt
   - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/wenode.txt
   - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/v2rayshare.txt
   - https://mirror.ghproxy.com/https://raw.githubusercontent.com/Barabama/FreeNodes/master/nodes/nodefree.txt
 clash:
+  - https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/Eternity.yml
   - https://raw.githubusercontent.com/aiboboxx/clashfree/main/clash.yml
   - https://raw.githubusercontent.com/a2470982985/getNode/main/clash.yaml
   - https://raw.githubusercontent.com/ermaozi01/free_clash_vpn/main/subscribe/clash.yml
   - https://raw.githubusercontent.com/ts-sf/fly/main/clash
-  - https://raw.githubusercontent.com/kkkouo/kkkouo.github.io/main/djsdy
   - https://raw.githubusercontent.com/zhangkaiitugithub/passcro/main/speednodes.yaml
-  - https://raw.githubusercontent.com/vxiaov/free_proxy_ss/main/clash/clash.provider.yaml
 hysteria:
   - https://gitlab.com/free9999/ipupdate/-/raw/master/hysteria/config.json
   - https://www.githubip.xyz/Alvin9999/pac2/master/hysteria/config.json
@@ -83,15 +83,9 @@ xray:
 GitHub_Readme: # 程序会抓取第一个反引号里面的内容，这里的key键名，您可以改为其它名称
   - https://raw.githubusercontent.com/abshare/abshare.github.io/main/README.md
   - https://raw.githubusercontent.com/mksshare/mksshare.github.io/main/README.md
-  - https://raw.githubusercontent.com/tolinkshare/freenode/main/README.md
-  - https://raw.githubusercontent.com/mianfeifq/share/main/README.md
   - https://raw.githubusercontent.com/aiboboxx/kexueshangwang/main/README.md
-  - https://raw.githubusercontent.com/Pawdroid/Free-servers/main/README.md
+  - https://proxy.v2gh.com/https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub
 含日期的链接: # 程序中，会将日期自动更新到今天和昨天(这两天的节点都抓取），原始链接的节点，如果不是昨天的，不会抓取的(日期太旧节点很大几率过期了)
-  - https://raw.githubusercontent.com/w1770946466/Auto_proxy/main/sub/2402/240219.txt
-  - https://v2rayshare.com/wp-content/uploads/2023/03/20230324.txt
-  - https://clashnode.com/wp-content/uploads/2024/02/20240206.yaml
   - https://clashgithub.com/wp-content/uploads/rss/20240206.txt
   - https://nodefree.org/dy/2023/02/20230214.txt
-  - https://nodeshare.org/wp-content/uploads/2024/02/0219.yaml
-  - https://nodebird.net/wp-content/uploads/2024/02/20240219.yaml
+  - https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/update/2407/240728.txt

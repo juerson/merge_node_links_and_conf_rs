@@ -2,21 +2,29 @@ use reqwest::Client;
 use std::time::Duration;
 use tokio::time;
 
-pub async fn fetch(url: String) -> (String, String) {
+pub async fn fetch(url: String, proxy_address: String) -> (String, String) {
+    let proxy_url = if url.starts_with("https://raw.githubusercontent.com/")
+        || url.starts_with("https://github.com/") // 针对类似https://github.com/2dust/v2rayN/blob/master/README.md
+        || url.starts_with("https://www.github.com/")
+    {
+        format!("https://{}/{}", proxy_address, url)
+    } else {
+        url.clone()
+    };
     let client = Client::new();
     // 设置超时时间为10秒
     let timeout_duration = Duration::from_secs(10);
     // 发起异步 HTTP 请求
-    let response = match time::timeout(timeout_duration, client.get(url.clone()).send()).await {
+    let response = match time::timeout(timeout_duration, client.get(&proxy_url).send()).await {
         Ok(result) => match result {
             Ok(response) => response,
             Err(_err) => {
-                println!("URL: {} -> GET请求失败！", url);
+                println!("URL: {} -> GET请求失败！", proxy_url.clone());
                 return (url.to_string(), "Error".to_string());
             }
         },
         Err(_timeout_err) => {
-            println!("URL: {} -> 请求超时！", url);
+            println!("URL: {} -> 请求超时！", proxy_url.clone());
             return (url.to_string(), "Timeout".to_string());
         }
     };
@@ -27,7 +35,7 @@ pub async fn fetch(url: String) -> (String, String) {
         let body_bytes = match response.bytes().await {
             Ok(bytes) => bytes,
             Err(_err) => {
-                println!("URL: {} -> 获取response的字节内容失败！", url);
+                println!("URL: {} -> 获取response的字节内容失败！", proxy_url.clone());
                 return (url.to_string(), "Error".to_string());
             }
         };
@@ -35,7 +43,7 @@ pub async fn fetch(url: String) -> (String, String) {
         let mut body = String::from_utf8_lossy(&body_bytes)
             .to_string()
             .replace(r"\n\n", r"\n");
-        println!("URL: {} -> 获取response内容成功！", url);
+        println!("URL: {} -> 获取response内容成功！", proxy_url.clone());
         // 下面提取Github中readme.md文件中的节点（方法一、方法二）
 
         /* 方法一：正则表达式，匹配第一个反引号中的内容 */
@@ -79,7 +87,7 @@ pub async fn fetch(url: String) -> (String, String) {
         // 返回url和body
         (url.to_string(), body)
     } else {
-        println!("URL: {} -> response的状态码不是'200'", url);
+        println!("URL: {} -> response的状态码不是'200'", proxy_url.clone());
         (url.to_string(), "Error".to_string())
     }
 }
